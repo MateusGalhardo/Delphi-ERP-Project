@@ -97,6 +97,7 @@ begin
     Abort;
   end;
 
+  tabManutencao.TabVisible := True;
   ControlarBotoes(btnNovo, btnAlterar, btnCancelar, btnGravar, btnApagar, dbnvgrNavigator, pgcPrincipal,False);
   EstadoDoCadastro:=ecInserir;
   LimparEdits;
@@ -426,7 +427,8 @@ begin
 
   grdListagem.Options:=[dgTitles,dgIndicator,dgColumnResize,dgColLines,dgRowLines,
                         dgTabs,dgAlwaysShowSelection,dgCancelOnExit,dgTitleClick,
-                        dgTitleHotTrack]
+                        dgTitleHotTrack];
+  tabManutencao.TabVisible := False;
 end;
 
 procedure TfrmTelaHeranca.FormShow(Sender: TObject);
@@ -552,6 +554,7 @@ begin
     Abort;
   end;
 
+  tabManutencao.TabVisible := True;
   ControlarBotoes(btnNovo, btnAlterar, btnCancelar, btnGravar, btnApagar, dbnvgrNavigator, pgcPrincipal,False);
     EstadoDoCadastro:=ecAlterar;
 end;
@@ -589,6 +592,7 @@ begin
   ControlarIndiceTab(pgcPrincipal, 0);
   EstadoDoCadastro:=ecNenhum;
   LimparEdits;
+  tabManutencao.TabVisible := False;
 end;
 
 procedure TfrmTelaHeranca.btnFecharClick(Sender: TObject);
@@ -619,6 +623,7 @@ begin
      else if EstadoDoCadastro = ecAlterar then
          GravarAuditoria('EDITAR', Self.Caption, 'Registro alterado: ' + GetDesc);
 
+    tabManutencao.TabVisible := False;
     ControlarBotoes(btnNovo, btnAlterar, btnCancelar, btnGravar, btnApagar, dbnvgrNavigator, pgcPrincipal,True);
     ControlarIndiceTab(pgcPrincipal, 0);
 

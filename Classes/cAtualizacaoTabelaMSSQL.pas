@@ -187,6 +187,7 @@ begin
       ' descricao VARCHAR(255) NULL, ' +
       ' valor DECIMAL(18,5) DEFAULT 0.00000 NULL, ' +
       ' quantidade DECIMAL(18,5) DEFAULT 0.00000 NULL, ' +
+      ' unidadeMedida VARCHAR(20) NULL, ' +
       ' categoriaId INT NULL, ' +
       ' DataProduto DATETIME NULL DEFAULT GETDATE(), ' +
       ' foto VARBINARY(MAX) NULL, ' +

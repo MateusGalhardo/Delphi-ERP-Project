@@ -73,7 +73,7 @@ begin
   if MessageDlg('Apagar o Registro:' + #13#13 + 'Código: ' + IntToStr(F_categoriaId) + #13 + 'Descrição: ' + F_descricao,
                 mtConfirmation, [mbYes, mbNo], 0) <> mrYes then
   begin
-    Exit;
+    Abort;
   end;
 
   Qry := TFDQuery.Create(nil);

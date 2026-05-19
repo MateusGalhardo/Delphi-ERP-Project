@@ -2,6 +2,12 @@ inherited frmConProduto: TfrmConProduto
   Caption = 'Pesquisa de Produto'
   PixelsPerInch = 96
   TextHeight = 13
+  inherited pnl1: TPanel
+    inherited lblIndice: TLabel
+      Left = 1
+      ExplicitLeft = 1
+    end
+  end
   inherited pnl3: TPanel
     inherited grdPesquisa: TDBGrid
       Columns = <
@@ -18,39 +24,43 @@ inherited frmConProduto: TfrmConProduto
         item
           Expanded = False
           FieldName = 'valor_final'
-          Title.Caption = 'Valor'
-          Width = 64
           Visible = True
         end
         item
           Expanded = False
           FieldName = 'quantidade'
-          Width = 64
+          Visible = True
+        end
+        item
+          Expanded = False
+          FieldName = 'unidadeMedida'
           Visible = True
         end>
     end
   end
   inherited QryListagem: TFDQuery
-    Active = True
     SQL.Strings = (
       'select * from ('
       
         '  select produtoId, nome, ceiling(valor / 0.45) as valor_final, ' +
-        'quantidade'
+        'quantidade, unidadeMedida'
       '  from produtos) t'
       '')
     Left = 720
     Top = 272
     object f1QryListagemprodutoId: TFDAutoIncField
+      DisplayLabel = 'C'#243'digo'
       FieldName = 'produtoId'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object f2QryListagemnome: TStringField
+      DisplayLabel = 'Nome'
       FieldName = 'nome'
       Size = 60
     end
     object fmtbcdfldQryListagemvalor_final: TFMTBCDField
+      DisplayLabel = 'Valor de venda'
       FieldName = 'valor_final'
       ReadOnly = True
       currency = True
@@ -58,9 +68,14 @@ inherited frmConProduto: TfrmConProduto
       Size = 0
     end
     object fmtbcdfldQryListagemquantidade: TFMTBCDField
+      DisplayLabel = 'Quantidade'
       FieldName = 'quantidade'
       Precision = 18
       Size = 5
+    end
+    object f2QryListagemunidadeMedida: TStringField
+      DisplayLabel = 'Unidade do produto'
+      FieldName = 'unidadeMedida'
     end
   end
   inherited dtsListagem: TDataSource

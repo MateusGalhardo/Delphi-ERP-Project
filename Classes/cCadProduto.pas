@@ -20,6 +20,7 @@ type
     F_categoriaId: Integer;
     F_Foto: TBitMap;
     F_fornId: Integer;
+    F_unidadeMedida: string;
 
   public
   constructor Create(aConexao:TFDConnection);
@@ -30,14 +31,15 @@ type
     function Selecionar(id:Integer):Boolean;
 
   published
-    property codigo        :Integer    read F_produtoId      write F_produtoId;
-    property nome          :string     read F_nome           write F_nome;
-    property descricao     :string     read F_descricao      write F_descricao;
-    property valor         :Double     read F_valor          write F_valor;
-    property quantidade    :Double     read F_quantidade     write F_quantidade;
-    property categoriaId   :Integer    read F_categoriaId    write F_categoriaId;
-    property foto          :TBitmap    read F_Foto           write F_Foto;
-    property fornId        :Integer    read F_fornId         write F_fornId;
+    property codigo         :Integer    read F_produtoId      write F_produtoId;
+    property nome           :string     read F_nome           write F_nome;
+    property descricao      :string     read F_descricao      write F_descricao;
+    property valor          :Double     read F_valor          write F_valor;
+    property quantidade     :Double     read F_quantidade     write F_quantidade;
+    property categoriaId    :Integer    read F_categoriaId    write F_categoriaId;
+    property foto           :TBitmap    read F_Foto           write F_Foto;
+    property fornId         :Integer    read F_fornId         write F_fornId;
+    property unidadeMedida  :string     read F_unidadeMedida  write F_unidadeMedida;
 
   end;
 
@@ -71,7 +73,7 @@ begin
                 'Codigo: '+IntToStr(F_produtoId)+#13+
                 'Descricao: '+F_nome,mtConfirmation,[mbYes, mbNo],0)<> mrYes then begin
      Result:=false;
-     Exit;;
+     Abort;
   end;
 
   try
@@ -117,20 +119,23 @@ begin
     Qry.Connection:=ConexaoDB;
     Qry.SQL.Clear;
     Qry.SQL.Add('UPDATE produtos '+
-                '   SET nome           =:nome '+
-                '       ,descricao     =:descricao '+
-                '       ,valor         =:valor '+
-                '       ,quantidade    =:quantidade '+
-                '       ,foto          =:foto '+
-                '       ,fornId        =:fornId '+
-                '       ,categoriaId   =:categoriaId '+
+                '   SET nome              =:nome '+
+                '       ,descricao        =:descricao '+
+                '       ,valor            =:valor '+
+                '       ,quantidade       =:quantidade '+
+                '       ,unidadeMedida    =:unidadeMedida '+
+                '       ,foto             =:foto '+
+                '       ,fornId           =:fornId '+
+                '       ,categoriaId      =:categoriaId '+
                 ' WHERE produtoId=:produtoId ');
+
     Qry.ParamByName('produtoId').AsInteger       :=Self.F_produtoId;
     Qry.ParamByName('fornId').AsInteger          :=Self.F_fornId;
     Qry.ParamByName('nome').AsString             :=Self.F_nome;
     Qry.ParamByName('descricao').AsString        :=Self.F_descricao;
     Qry.ParamByName('valor').AsFloat             :=Self.F_valor;
     Qry.ParamByName('quantidade').AsFloat        :=Self.F_quantidade;
+    Qry.ParamByName('unidadeMedida').AsString    :=Self.F_unidadeMedida;
     Qry.ParamByName('categoriaId').AsInteger     :=Self.F_categoriaId;
 
     if (Self.F_Foto = nil) or Self.F_Foto.Empty then
@@ -180,6 +185,7 @@ begin
                 '                      fornId,  '+
                 '                      valor,  '+
                 '                      quantidade,  '+
+                '                      unidadeMedida,  '+
                 '                      categoriaId, DataProduto, '+
                 '                      foto ) '+
                 ' VALUES              (:nome, '+
@@ -187,6 +193,7 @@ begin
                 '                      :fornId,  '+
                 '                      :valor,  '+
                 '                      :quantidade,  '+
+                '                      :unidadeMedida,  '+
                 '                      :categoriaId, :DataProduto, '+
                 '                      :foto ) ');
 
@@ -194,6 +201,7 @@ begin
     Qry.ParamByName('descricao').AsString        :=Self.F_descricao;
     Qry.ParamByName('valor').AsFloat             :=Self.F_valor;
     Qry.ParamByName('quantidade').AsFloat        :=Self.F_quantidade;
+    Qry.ParamByName('unidadeMedida').AsString    := Self.F_unidadeMedida;
     Qry.ParamByName('categoriaId').AsInteger     :=Self.F_categoriaId;
     Qry.ParamByName('fornId').AsInteger          :=Self.F_fornId;
     Qry.ParamByName('DataProduto').AsDateTime    := TDateTime(Now);
@@ -245,6 +253,7 @@ begin
                 '       descricao, '+
                 '       valor, '+
                 '       quantidade, '+
+                '       unidadeMedida, '+
                 '       categoriaId, '+
                 '       foto '+
                 '  FROM produtos '+
@@ -259,6 +268,7 @@ begin
       Self.F_descricao     := Qry.FieldByName('descricao').AsString;
       Self.F_valor         := Qry.FieldByName('valor').AsFloat;
       Self.F_quantidade    := Qry.FieldByName('quantidade').AsFloat;
+      Self.F_unidadeMedida := Qry.FieldByName('unidadeMedida').AsString;
       Self.F_categoriaId   := Qry.FieldByName('categoriaId').AsInteger;
       Self.F_foto.Assign(Qry.FieldByName('foto'));
     Except

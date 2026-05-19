@@ -15,6 +15,7 @@ type
     f2QryListagemnome: TStringField;
     fmtbcdfldQryListagemvalor_final: TFMTBCDField;
     fmtbcdfldQryListagemquantidade: TFMTBCDField;
+    f2QryListagemunidadeMedida: TStringField;
     procedure FormCreate(Sender: TObject);
   private
     { Private declarations }

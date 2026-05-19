@@ -103,13 +103,17 @@ begin
     Exit;
   end;
 
+  if fdqryListagem.FieldByName('usuarioId').AsInteger < 4 then begin
+    ShowMessage('Esse usuário não pode ser alterado');
+    Abort;
+  end;
+
   if oUsuario.Selecionar(fdqryListagem.FieldByName('usuarioID').AsInteger) then
   begin
     edtUsuarioId.Text := IntToStr(oUsuario.codigo);
     edtNome.Text := oUsuario.nome;
     edtSenha.Text := oUsuario.senha;
     oUsuario.senha := edtSenha.Text;
-
   end
   else
   begin
@@ -121,7 +125,6 @@ begin
   EstadoDoCadastro := ecAlterar;
   fdqryListagem.Refresh;
   inherited;
-
 end;
 
 procedure TfrmCadUsuario.btnApagarClick(Sender: TObject);

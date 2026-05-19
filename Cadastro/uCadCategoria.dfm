@@ -2,20 +2,6 @@ inherited frmCadCategoria: TfrmCadCategoria
   Caption = 'Cadastro de Categorias'
   PixelsPerInch = 96
   TextHeight = 13
-  object lbl1: TLabel [0]
-    Left = 120
-    Top = 16
-    Width = 16
-    Height = 13
-    Caption = 'lbl1'
-  end
-  object lbl2: TLabel [1]
-    Left = 32
-    Top = 16
-    Width = 16
-    Height = 13
-    Caption = 'lbl2'
-  end
   inherited pgcPrincipal: TPageControl
     inherited tabListagem: TTabSheet
       inherited grdListagem: TDBGrid

@@ -18,8 +18,6 @@ type
     lbl1: TLabel;
     edtValor: TCurrencyEdit;
     edtQuantidade: TCurrencyEdit;
-    lbl2: TLabel;
-    lbl3: TLabel;
     lkpCategoria: TDBLookupComboBox;
     QryCategoria: TFDQuery;
     dtsCategoria: TDataSource;
@@ -54,6 +52,9 @@ type
     f2ListagemDescricaoCategoria: TStringField;
     lbl7: TLabel;
     btnPesquisarFornecedor: TSpeedButton;
+    cbbUnidade: TComboBox;
+    lbl8: TLabel;
+    f2ListagemunidadeMedida: TStringField;
     procedure btnAlterarClick(Sender: TObject);
     procedure btnNovoClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -112,6 +113,7 @@ begin
   oProduto.valor          :=edtValor.Value;
   oProduto.quantidade     :=edtQuantidade.Value;
   oProduto.fornId         :=lkpFornecedor.KeyValue;
+  oProduto.unidadeMedida  :=cbbUnidade.Items[cbbUnidade.ItemIndex];
 
     if imgImagem.picture.BitMap.Empty then
      oProduto.Foto.Assign(nil)
@@ -193,6 +195,7 @@ begin
      lkpCategoria.KeyValue     :=oProduto.categoriaId;
      edtValor.Value            :=oProduto.valor;
      edtQuantidade.Value       :=oProduto.quantidade;
+     cbbUnidade.ItemIndex      :=cbbUnidade.Items.IndexOf(oProduto.unidadeMedida);
      lkpFornecedor.KeyValue    :=oProduto.fornId;
      imgImagem.Picture.Assign(oProduto.foto);
   end
@@ -213,8 +216,18 @@ begin
 end;
 
 procedure TfrmCadProduto.btnGravarClick(Sender: TObject);
-var Qry: TFDQuery;
+var Qry: TFDQuery; Unidade: string;
 begin
+   Unidade := cbbUnidade.Text;
+
+  if ((Unidade = 'Unidade') or (Unidade = 'Caixa') or (Unidade = 'Saco') or (Unidade = 'Pacote')) and
+     (Frac(edtQuantidade.Value) <> 0) then
+  begin                                                 //pra não permitir que os itens acima sejam quebrados
+    ShowMessage('Essa unidade não permite valor fracionado.');
+    edtQuantidade.SetFocus;
+    Exit;
+  end;
+
   Qry := TFDQuery.Create(nil);
   try
     Qry.Connection := dtmConexao.ConexaoDB;
@@ -234,6 +247,13 @@ begin
 
     if VarIsNull(lkpFornecedor.KeyValue) then begin
       showMessage('Selecione o fornecedor');
+      lkpFornecedor.SetFocus;
+      Exit;
+    end;
+
+    if VarIsNull(lkpCategoria.KeyValue) then begin
+      ShowMessage('Selecione a categoria');
+      lkpCategoria.SetFocus;
       Exit;
     end;
 
@@ -264,6 +284,8 @@ procedure TfrmCadProduto.btnNovoClick(Sender: TObject);
 begin
   inherited;
   edtNome.SetFocus;
+  imgImagem.Picture := nil;
+  cbbUnidade.ItemIndex := -1;
 end;
 
 procedure TfrmCadProduto.btnPesquisarCategoriaClick(Sender: TObject);

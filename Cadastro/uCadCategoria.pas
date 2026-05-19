@@ -21,8 +21,6 @@ type
   TfrmCadCategoria = class(TfrmTelaHeranca)
     f1ListagemcategoriaId: TFDAutoIncField;
     f2Listagemdescricao: TStringField;
-    lbl1: TLabel;
-    lbl2: TLabel;
     edtCategoriaId: TLabeledEdit;
     edtDescricao: TLabeledEdit;
 

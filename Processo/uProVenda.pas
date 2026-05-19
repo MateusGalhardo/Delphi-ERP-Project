@@ -361,6 +361,12 @@ begin
     lkpCliente.SetFocus;
     abort;
   end
+  else if
+  edtDataVenda.Date < Date then begin
+    ShowMessage('Data selecionada não pode ser passado');
+    edtDataVenda.SetFocus;
+    Abort;
+  end
    else
     ShowMessage('Venda realizada!');
   end
@@ -433,8 +439,7 @@ end;
 procedure TfrmProVenda.btnAdicionarItemClick(Sender: TObject);
 var estoque: Integer; qntDigitada: Integer;
 begin
-     inherited;
-
+inherited;
   if lkpProduto.Text ='' then begin
     MessageDlg('Produto é um campo obrigatório',mtInformation,[mbOK],0);
     lkpProduto.SetFocus;
@@ -465,7 +470,7 @@ begin
      Abort;
   end;
 
-  if edtQuantidade.Value <= 0 then begin
+  if (edtQuantidade.Text = '') or (edtQuantidade.Value <= 0) then begin
      MessageDlg('Quantidade não pode ser zero',mtInformation, [mbOK],0);
      edtQuantidade.SetFocus;
      Abort;
@@ -638,6 +643,11 @@ procedure TfrmProVenda.edtQuantidadeExit(Sender: TObject);
 begin
   inherited;
   edtTotalProduto.Value:=TotalizarProduto(edtValorUnitario.Value, edtQuantidade.Value);
+  if (edtQuantidade.Text = '') or (edtQuantidade.Value <= 0) then begin
+     MessageDlg('Quantidade não pode ser zero',mtInformation, [mbOK],0);
+     edtQuantidade.SetFocus;
+     Abort;
+  end;
 end;
 
 procedure TfrmProVenda.FormClose(Sender: TObject; var Action: TCloseAction);

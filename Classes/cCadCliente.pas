@@ -6,20 +6,20 @@ uses
    System.Classes,
    Vcl.Controls,
    Vcl.ExtCtrls,
-  FireDAC.Comp.Client,
-  Vcl.Dialogs,
-  System.SysUtils,
-  FireDAC.Stan.Intf,
-  FireDAC.Stan.Option,
+   FireDAC.Comp.Client,
+   Vcl.Dialogs,
+   System.SysUtils,
+   FireDAC.Stan.Intf,
+   FireDAC.Stan.Option,
    FireDAC.Stan.Param,
-  FireDAC.Stan.Error,
+   FireDAC.Stan.Error,
    FireDAC.DatS,
-    FireDAC.Phys.Intf,
-     FireDAC.DApt.Intf,
-      FireDAC.Stan.Async,
-       FireDAC.DApt,
-  FireDAC.Comp.DataSet,
-  uDTMconexao;
+   FireDAC.Phys.Intf,
+   FireDAC.DApt.Intf,
+   FireDAC.Stan.Async,
+   FireDAC.DApt,
+   FireDAC.Comp.DataSet,
+   uDTMconexao;
 
 type
   TCliente = class
