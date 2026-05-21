@@ -88,6 +88,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_UnitSearchPath>C:\Projeto Delphi\Classes;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <BRCC_IncludePath>../viacep/src;C:\Projeto Delphi\src;C:\Projeto Delphi\viacep-master\src;$(BRCC_IncludePath)</BRCC_IncludePath>
+        <Icon_MainIcon>vendas_Icon3.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>

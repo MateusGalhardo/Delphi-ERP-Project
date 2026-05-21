@@ -2,7 +2,6 @@ inherited frmFornecedor: TfrmFornecedor
   Caption = 'Cadastro de Fornecedor'
   ClientHeight = 581
   ClientWidth = 1131
-  ExplicitTop = -51
   ExplicitWidth = 1137
   ExplicitHeight = 610
   PixelsPerInch = 96
@@ -10,6 +9,7 @@ inherited frmFornecedor: TfrmFornecedor
   inherited pgcPrincipal: TPageControl
     Width = 1131
     Height = 537
+    ActivePage = tabManutencao
     ExplicitWidth = 1131
     ExplicitHeight = 537
     inherited tabListagem: TTabSheet
@@ -207,6 +207,7 @@ inherited frmFornecedor: TfrmFornecedor
         Height = 21
         TabOrder = 10
         OnChange = edtTelefoneChange
+        OnKeyPress = edtTelefoneKeyPress
       end
       object edtEmail: TLabeledEdit
         Tag = 2
@@ -236,7 +237,7 @@ inherited frmFornecedor: TfrmFornecedor
       object edtCNPJ: TEdit
         Left = 579
         Top = 156
-        Width = 126
+        Width = 125
         Height = 21
         MaxLength = 18
         TabOrder = 5
@@ -251,8 +252,8 @@ inherited frmFornecedor: TfrmFornecedor
         TabOrder = 11
       end
       object edtBairro: TEdit
-        Left = 220
-        Top = 208
+        Left = 214
+        Top = 206
         Width = 145
         Height = 21
         ReadOnly = True
@@ -289,7 +290,7 @@ inherited frmFornecedor: TfrmFornecedor
       object mskCEP: TMaskEdit
         Left = 579
         Top = 104
-        Width = 126
+        Width = 70
         Height = 21
         EditMask = '99.999-999;1;_'
         MaxLength = 10

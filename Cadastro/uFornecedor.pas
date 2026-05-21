@@ -56,6 +56,7 @@ type
     procedure FormShow(Sender: TObject);
     procedure mskCEPChange(Sender: TObject);
     procedure btnApagarClick(Sender: TObject);
+    procedure edtTelefoneKeyPress(Sender: TObject; var Key: Char);
   private
     { Private declarations }
     oFornecedor: TFornecedor;
@@ -97,7 +98,35 @@ begin
 end;
 
 function TfrmFornecedor.Apagar: Boolean;
+var Qry: TFDQuery;
 begin
+  Result := False;
+
+  Qry := TFDQuery.Create(nil);
+  try
+    Qry.Connection := dtmConexao.ConexaoDB;
+
+    Qry.SQL.Text :=
+      'SELECT TOP 1 produtoId ' +
+      'FROM produtos ' +
+      'WHERE fornId = :fornId';
+
+    Qry.ParamByName('fornId').AsInteger :=
+      fdqryListagem.FieldByName('fornId').AsInteger;
+
+    Qry.Open;
+
+    if not Qry.IsEmpty then
+    begin
+      MessageDlg('Este fornecedor não pode ser apagado.' + sLineBreak + 'Existem produtos vinculados a ele.', mtWarning,
+                 [mbOK], 0);
+      Abort;
+    end;
+
+  finally
+    Qry.Free;
+  end;
+
   if oFornecedor.Selecionar(fdqryListagem.FieldByName('fornId').AsInteger) then begin
     result:=oFornecedor.Apagar;
   end;
@@ -377,14 +406,10 @@ var Texto: string;
 begin
   inherited;
 begin
-  Texto := edtTelefone.Text;
-
-
   Texto := SomenteNumeros(edtTelefone.Text);
 
   if Texto = '' then Exit;
-                                //SE a primeira casinha for 0 é 0800
-
+                                //se a primeira casinha, a terceira e a quarta for 0 é 0800
   if (Texto[1] = '0') and (Texto[3] = '0') and (Texto[4] = '0') then
   begin
     if Length(Texto) <= 4 then
@@ -417,5 +442,13 @@ begin
   edtTelefone.SelStart := Length(edtTelefone.Text);
 end;
 end;
+
+procedure TfrmFornecedor.edtTelefoneKeyPress(Sender: TObject; var Key: Char);
+begin
+  if Key in ['a'..'z', 'A'..'Z', #32] then
+  Key := #0;
+  inherited;
+end;
+
 end.
 

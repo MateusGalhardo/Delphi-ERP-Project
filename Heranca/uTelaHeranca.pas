@@ -59,7 +59,6 @@ type
     procedure DesablitarEditPK;
     procedure LimparEdits;
 
-
   public
     { Public declarations }
     EstadoDoCadastro:TEstadoDoCadastro;
@@ -151,7 +150,7 @@ begin
     CondicaoSQL := WhereOrAnd+''+NomeCampo + '='+mskPesquisar.Text
   end
 
-  //AUTORAL DO PEPPA, MATEUS E LEO
+  //AUTORAL DO BRUNO, MATEUS E LEO
 
   else if (TipoCampo in [ftDate, ftDateTime, ftdate, ftTimeStamp]) then
   begin
@@ -173,7 +172,6 @@ begin
 
   mskPesquisar.Text:='';
   mskPesquisar.SetFocus;
-
 end;
 
 procedure TfrmTelaHeranca.mskPesquisarChange(Sender: TObject);
@@ -228,9 +226,6 @@ begin
   end;
   end;
 
-
-
-
   if(trim(TMaskEdit(Sender).Text) = '')then
     Exit;
 
@@ -258,8 +253,7 @@ begin
 end;
 
 function TfrmTelaHeranca.SomenteNumeros(const Texto:string):string;
-var
-  I:Integer;
+var I:Integer;
 begin
   Result:='';
 
@@ -629,6 +623,7 @@ begin
 
     EstadoDoCadastro:=ecNenhum;
     LimparEdits;
+
     fdqryListagem.Close;
     fdqryListagem.Open;
    end;

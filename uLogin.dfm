@@ -40,8 +40,6 @@ object frmLogin: TfrmLogin
     Height = 614
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 685
-    ExplicitHeight = 585
     object pnl2: TPanel
       Left = 1
       Top = 1
@@ -54,8 +52,6 @@ object frmLogin: TfrmLogin
       ParentShowHint = False
       ShowHint = False
       TabOrder = 0
-      ExplicitWidth = 365
-      ExplicitHeight = 583
       object img1: TImage
         Left = 34
         Top = 174
@@ -1555,8 +1551,6 @@ object frmLogin: TfrmLogin
       Color = 16119285
       ParentBackground = False
       TabOrder = 1
-      ExplicitLeft = 376
-      ExplicitHeight = 583
       object pnl4: TPanel
         Left = 30
         Top = 141
@@ -1576,7 +1570,7 @@ object frmLogin: TfrmLogin
           Align = alTop
           Alignment = taCenter
           Anchors = []
-          Caption = 'Bem Vindo ao BitWave!'
+          Caption = 'Bem Vindo ao Bitwave!'
           Color = 16119285
           Font.Charset = ANSI_CHARSET
           Font.Color = 1710618
@@ -1585,7 +1579,7 @@ object frmLogin: TfrmLogin
           Font.Style = [fsBold]
           ParentColor = False
           ParentFont = False
-          ExplicitTop = 14
+          ExplicitWidth = 177
         end
         object lbl3: TLabel
           Left = 6

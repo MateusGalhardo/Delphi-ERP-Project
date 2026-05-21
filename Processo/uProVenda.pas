@@ -141,11 +141,10 @@ procedure TfrmProVenda.lkpClienteCloseUp(Sender: TObject);
 var Situacao: Integer; Observacao: string;
 begin
   Situacao := dtmVenda.QryCliente.FieldByName('IDSituacao').AsInteger;
+  Observacao := dtmVenda.QryCliente.FieldByName('observacao').AsString;
 
   if Situacao = 3 then
   begin
-    Observacao := dtmVenda.QryCliente.FieldByName('observacao').AsString;
-
     if Observacao <> '' then
       ShowMessage('Observação para o cliente:' + sLineBreak + Observacao)
     else
@@ -345,6 +344,7 @@ begin
     end
     else
       lkpCliente.KeyValue:='';
+      Abort;
   end;
 
   if MessageDlg('Tem certeza que deseja realizar esta venda?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then

@@ -9,10 +9,7 @@ inherited frmProVenda: TfrmProVenda
     ActivePage = tabManutencao
     ExplicitWidth = 913
     inherited tabListagem: TTabSheet
-      ExplicitLeft = 4
-      ExplicitTop = 24
       ExplicitWidth = 905
-      ExplicitHeight = 457
       inherited pnlListagemTopo: TPanel
         Width = 905
         ExplicitWidth = 905

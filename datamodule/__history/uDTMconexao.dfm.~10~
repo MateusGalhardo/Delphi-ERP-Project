@@ -1,0 +1,13 @@
+object dtmConexao: TdtmConexao
+  OldCreateOrder = False
+  OnCreate = DataModuleCreate
+  Height = 287
+  Width = 663
+  object ConexaoDB: TFDConnection
+    Params.Strings = (
+      'DriverID=MSSQL')
+    LoginPrompt = False
+    Left = 368
+    Top = 120
+  end
+end
