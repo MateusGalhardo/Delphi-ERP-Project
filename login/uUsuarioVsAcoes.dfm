@@ -40,6 +40,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
       TitleFont.Name = 'Tahoma'
       TitleFont.Style = []
       OnDrawColumnCell = grdUsuariosDrawColumnCell
+      OnKeyDown = grdUsuariosKeyDown
       Columns = <
         item
           Expanded = False
@@ -79,6 +80,7 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
       TitleFont.Style = []
       OnDrawColumnCell = grdAcoesDrawColumnCell
       OnDblClick = grdAcoesDblClick
+      OnKeyDown = grdAcoesKeyDown
       Columns = <
         item
           Expanded = False
@@ -161,7 +163,6 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
     Top = 128
   end
   object QryUsuario: TFDQuery
-    Active = True
     AfterScroll = QryUsuarioAfterScroll
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
@@ -185,7 +186,6 @@ object frmUsuarioVsAcoes: TfrmUsuarioVsAcoes
     end
   end
   object QryAcoes: TFDQuery
-    Active = True
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
       'SELECT ua.usuarioId,'

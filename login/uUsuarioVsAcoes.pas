@@ -35,9 +35,12 @@ type
     procedure grdUsuariosDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer; Column: TColumn;
       State: TGridDrawState);
     procedure FormCreate(Sender: TObject);
+    procedure grdAcoesKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure grdUsuariosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     { Private declarations }
     procedure SelecionarAcoesAcessoPorUsuario;
+    procedure BloqueiaCTRL_DEL_DBGrid(var Key: Word; Shift: TShiftState);
   public
     { Public declarations }
   end;
@@ -139,6 +142,11 @@ begin
   grdAcoes.Canvas.TextRect(Rect, Rect.Left + 2, Rect.Top + 2, Column.Field.AsString);
 end;
 
+procedure TfrmUsuarioVsAcoes.grdAcoesKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  BloqueiaCTRL_DEL_DBGrid(Key,Shift);
+end;
+
 procedure TfrmUsuarioVsAcoes.grdUsuariosDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer;
   Column: TColumn; State: TGridDrawState);
 var
@@ -175,6 +183,17 @@ end;
 
   grdUsuarios.Canvas.FillRect(Rect);
   grdUsuarios.DefaultDrawColumnCell(Rect, DataCol, Column, State);
+end;
+
+procedure TfrmUsuarioVsAcoes.grdUsuariosKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+begin
+  BloqueiaCTRL_DEL_DBGrid(Key,Shift);
+end;
+
+procedure TfrmUsuarioVsAcoes.BloqueiaCTRL_DEL_DBGrid(var Key: Word; Shift: TShiftState);
+begin
+  if (Shift =[ssCtrl]) and (Key = 46) then
+      Key := 0
 end;
 
 procedure TfrmUsuarioVsAcoes.FormCreate(Sender: TObject);

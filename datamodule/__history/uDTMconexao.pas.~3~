@@ -1,0 +1,78 @@
+unit uDTMconexao;
+
+interface
+
+uses
+  System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.MSSQL,
+  FireDAC.Phys.MSSQLDef, FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS,
+  FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet, System.IniFiles, System.IOUtils;
+
+type
+  TdtmConexao = class(TDataModule)
+    ConexaoDB: TFDConnection;
+    procedure DataModuleCreate(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  dtmConexao: TdtmConexao;
+
+implementation
+
+{%CLASSGROUP 'Vcl.Controls.TControl'}
+
+{$R *.dfm}
+
+procedure TdtmConexao.DataModuleCreate(Sender: TObject);
+var Ini: TIniFile; Path, Auth: string;
+begin
+  Path := TPath.Combine(ExtractFilePath(ParamStr(0)), 'vendas.ini');
+
+  if not FileExists(Path) then
+    raise Exception.Create('Arquivo vendas.ini não encontrado.');
+
+  Ini := TIniFile.Create(Path);
+  try
+    ConexaoDB.Params.Clear;
+    ConexaoDB.Params.DriverID := 'MSSQL';
+
+    ConexaoDB.Params.Values['Server'] := Ini.ReadString('DB','Server','');
+    ConexaoDB.Params.Values['Database'] := 'master';
+
+    Auth := Ini.ReadString('DB','Auth','Windows');
+
+    if SameText(Auth, 'SQL') then
+    begin
+      ConexaoDB.Params.Values['User_Name'] := Ini.ReadString('DB','User','');
+      ConexaoDB.Params.Values['Password'] := Ini.ReadString('DB','Password','');
+    end
+    else
+    begin
+      ConexaoDB.Params.Values['OSAuthent'] := 'Yes';
+    end;
+
+    ConexaoDB.LoginPrompt := False;
+
+    try
+      ConexaoDB.Connected := True;
+    except
+      on E: Exception do
+      begin
+        raise Exception.Create(
+          'Erro ao conectar no servidor SQL.' + sLineBreak +
+          'Verifique Server no vendas.ini.' + sLineBreak +
+          E.Message
+        );
+      end;
+    end;
+
+  finally
+    Ini.Free;
+  end;
+end;
+
+end.

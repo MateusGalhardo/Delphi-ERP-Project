@@ -41,7 +41,7 @@ begin
     ConexaoDB.Params.DriverID := 'MSSQL';
 
     ConexaoDB.Params.Values['Server'] := Ini.ReadString('DB','Server','');
-    ConexaoDB.Params.Values['Database'] := 'master';
+    ConexaoDB.Params.Values['Database'] := 'vendas';
 
     Auth := Ini.ReadString('DB','Auth','Windows');
 

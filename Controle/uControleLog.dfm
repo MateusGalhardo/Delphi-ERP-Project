@@ -28,6 +28,7 @@ inherited frmControleLog: TfrmControleLog
     inherited grdPesquisa: TDBGrid
       Width = 1014
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgAlwaysShowSelection, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+      OnDblClick = nil
       Columns = <
         item
           Expanded = False
@@ -62,7 +63,6 @@ inherited frmControleLog: TfrmControleLog
     end
   end
   inherited QryListagem: TFDQuery
-    Active = True
     SQL.Strings = (
       'select * from auditoria')
     Left = 676

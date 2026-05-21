@@ -36,6 +36,7 @@ type
     procedure ExibirLabelIndice(Campo: string; aLabel: TLabel);
     function RetornarCampoTraduzido(Campo: string): string;
     function SomenteNumeros(const Texto: string): string;
+    procedure BloqueiaCTRL_DEL_DBGrid(var Key: Word; Shift: TShiftState);
     { Private declarations }
   public
     { Public declarations }
@@ -164,8 +165,7 @@ end;
 
 procedure TfrmTelaHerancaConsulta.grdPesquisaKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 begin
-  if (Shift = [ssCtrl]) and (Key = 46) then
-      Key := 0;
+  BloqueiaCTRL_DEL_DBGrid(Key,Shift);
 end;
 
 procedure TfrmTelaHerancaConsulta.grdPesquisaTitleClick(Column: TColumn);
@@ -173,6 +173,12 @@ begin
   IndiceAtual :=Column.FieldName;
   QryListagem.IndexFieldNames:=IndiceAtual;
   ExibirLabelIndice(IndiceAtual, lblIndice);
+end;
+
+procedure TfrmTelaHerancaConsulta.BloqueiaCTRL_DEL_DBGrid(var Key: Word; Shift: TShiftState);
+begin
+  if (Shift =[ssCtrl]) and (Key = 46) then
+      Key := 0
 end;
 
 function TfrmTelaHerancaConsulta.RetornarCampoTraduzido(Campo:string):string;

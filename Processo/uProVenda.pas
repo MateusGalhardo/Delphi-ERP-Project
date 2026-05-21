@@ -153,7 +153,7 @@ begin
 
    if(dtmVenda.QryCliente.FieldByName('IDSituacao').AsInteger = 4) then
   begin
-    ShowMessage('Cliente Inativo!');
+    ShowMessage('Cliente Inativo!' +sLineBreak+ 'Verifique se os dados cadastrais estão atualizados' );
     lkpCliente.KeyValue:='';
   end;
 
