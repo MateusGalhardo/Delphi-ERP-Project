@@ -10,9 +10,16 @@ inherited frmCadProduto: TfrmCadProduto
     Width = 1023
     Height = 499
     ActivePage = tabManutencao
+    ExplicitWidth = 1023
+    ExplicitHeight = 499
     inherited tabListagem: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 1015
+      ExplicitHeight = 471
       inherited pnlListagemTopo: TPanel
         Width = 1015
+        ExplicitWidth = 1015
       end
       inherited grdListagem: TDBGrid
         Width = 830
@@ -56,8 +63,6 @@ inherited frmCadProduto: TfrmCadProduto
         Height = 415
         Align = alRight
         TabOrder = 2
-        ExplicitLeft = 697
-        ExplicitHeight = 401
         object imgProduto: TImage
           Left = 1
           Top = 1
@@ -75,8 +80,8 @@ inherited frmCadProduto: TfrmCadProduto
       end
     end
     inherited tabManutencao: TTabSheet
-      ExplicitLeft = 8
-      ExplicitTop = 25
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 1015
       ExplicitHeight = 471
       object lbl1: TLabel
@@ -322,6 +327,7 @@ inherited frmCadProduto: TfrmCadProduto
         Top = 21
         Width = 151
         Height = 133
+        Caption = 'Escolher imagem'
         DragCursor = crHandPoint
         TabOrder = 7
         object imgImagem: TImage
@@ -372,11 +378,14 @@ inherited frmCadProduto: TfrmCadProduto
   inherited pnlRodape: TPanel
     Top = 499
     Width = 1023
+    ExplicitTop = 499
+    ExplicitWidth = 1023
     inherited dbnvgrNavigator: TDBNavigator
       Hints.Strings = ()
     end
     inherited btnFechar: TBitBtn
       Left = 933
+      ExplicitLeft = 933
     end
   end
   inherited fdqryListagem: TFDQuery
@@ -497,7 +506,6 @@ inherited frmCadProduto: TfrmCadProduto
     end
   end
   object QryFornecedor: TFDQuery
-    Active = True
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
       'Select fornId, nome from fornecedor')

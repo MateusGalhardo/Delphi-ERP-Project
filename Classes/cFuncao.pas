@@ -68,13 +68,7 @@ begin
 end;
 
 class procedure TFuncao.CarregarImagem(aImage: TImage);
-var Bmp, BmpTrans: TBitmap;
-jpg: TJPEGImage;
-Pic: TPicture;
-Png: TPngImage;
-opdSelecionar:TOpenPictureDialog;
-iWidth:Integer;
-iHeight:Integer;
+var Bmp, BmpTrans: TBitmap; jpg: TJPEGImage; Pic: TPicture; Png: TPngImage; opdSelecionar:TOpenPictureDialog; iWidth:Integer; iHeight:Integer;
 begin
   try
     iWidth:=160;
