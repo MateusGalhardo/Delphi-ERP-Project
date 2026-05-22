@@ -601,7 +601,7 @@ inherited frmCadCliente: TfrmCadCliente
         EditLabel.Caption = 'Bairro'
         MaxLength = 40
         ReadOnly = True
-        TabOrder = 9
+        TabOrder = 10
       end
       object edtCidade: TLabeledEdit
         Tag = 2
@@ -626,7 +626,7 @@ inherited frmCadCliente: TfrmCadCliente
         EditLabel.Height = 13
         EditLabel.Caption = 'Email'
         MaxLength = 100
-        TabOrder = 10
+        TabOrder = 11
       end
       object edtNome: TLabeledEdit
         Tag = 2
@@ -647,7 +647,7 @@ inherited frmCadCliente: TfrmCadCliente
         Height = 21
         Date = 46101.390983842590000000
         Time = 46101.390983842590000000
-        TabOrder = 12
+        TabOrder = 13
       end
       object cbbPessoa: TComboBox
         Left = 498
@@ -666,16 +666,19 @@ inherited frmCadCliente: TfrmCadCliente
         Top = 92
         Width = 255
         Height = 21
+        MaxLength = 18
         TabOrder = 4
         OnChange = edtDocChange
+        OnKeyPress = edtDocKeyPress
       end
       object edtTelefone: TEdit
         Left = 497
         Top = 240
         Width = 254
         Height = 21
-        TabOrder = 11
+        TabOrder = 12
         OnChange = edtTelefoneChange
+        OnKeyPress = edtTelefoneKeyPress
       end
       object lkpStatus: TDBLookupComboBox
         Left = 498
@@ -687,7 +690,7 @@ inherited frmCadCliente: TfrmCadCliente
         KeyField = 'IDSituacao'
         ListField = 'SituacaoCliente'
         ListSource = dsStatus
-        TabOrder = 13
+        TabOrder = 14
         OnCloseUp = lkpStatusCloseUp
       end
       object edtEstado: TLabeledEdit
@@ -701,7 +704,7 @@ inherited frmCadCliente: TfrmCadCliente
         EditLabel.Caption = 'Estado'
         MaxLength = 100
         ReadOnly = True
-        TabOrder = 8
+        TabOrder = 9
       end
       object edtObservacao: TEdit
         Left = 202
@@ -709,7 +712,7 @@ inherited frmCadCliente: TfrmCadCliente
         Width = 615
         Height = 97
         AutoSize = False
-        TabOrder = 14
+        TabOrder = 15
         Visible = False
       end
       object edtCasa: TEdit
@@ -719,6 +722,15 @@ inherited frmCadCliente: TfrmCadCliente
         Height = 21
         MaxLength = 6
         TabOrder = 7
+      end
+      object chkSemNumero: TCheckBox
+        Left = 829
+        Top = 145
+        Width = 84
+        Height = 17
+        Caption = 'Sem n'#250'mero?'
+        TabOrder = 8
+        OnClick = chkSemNumeroClick
       end
     end
   end

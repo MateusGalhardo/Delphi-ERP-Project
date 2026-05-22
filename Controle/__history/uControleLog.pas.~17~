@@ -22,7 +22,6 @@ type
     procedure btnPesquisarClick(Sender: TObject);
     procedure mskPesquisarChange(Sender: TObject);
     procedure grdPesquisaTitleClick(Column: TColumn);
-    procedure mskPesquisarExit(Sender: TObject);
   private
     { Private declarations }
     SelectOriginal: string;
@@ -156,6 +155,7 @@ end;
 
 procedure TfrmControleLog.mskPesquisarChange(Sender: TObject);
 var Date:TDateTime;
+s: string;
 begin
   if(trim(TMaskEdit(Sender).Text) = '')then
     Exit;
@@ -181,20 +181,23 @@ begin
          QryListagem.Locate(IndiceAtual, Date, []);
        end
      end
-       else QryListagem.Locate(IndiceAtual, TMaskEdit(Sender).Text, [])
-end;
+       else QryListagem.Locate(IndiceAtual, TMaskEdit(Sender).Text, []);
 
-procedure TfrmControleLog.mskPesquisarExit(Sender: TObject);
-var
-  Data: TDate;
-begin
-  if not TryStrToDate(mskPesquisar.Text, Data) then
-  begin
-    ShowMessage('Digite uma data válida no formato dd/mm/aaaa');
-    Exit;
+  s := StringReplace(mskPesquisar.Text, '/', '', [rfReplaceAll]);
+
+  if Length(s) <= 2 then begin
+
+  if Length(s) > 2 then
+    Insert('/', s, 3);
+
+  if Length(s) > 5 then
+    Insert('/', s, 6);
+
+  mskPesquisar.OnChange := nil;
+  mskPesquisar.Text := s;
+  mskPesquisar.SelStart := Length(s);
+  mskPesquisar.OnChange := mskPesquisarChange;
   end;
-
-  QryListagem.ParamByName('DATA_HORA').AsDate := Data;
 end;
 
 end.

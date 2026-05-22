@@ -141,11 +141,10 @@ procedure TfrmProVenda.lkpClienteCloseUp(Sender: TObject);
 var Situacao: Integer; Observacao: string;
 begin
   Situacao := dtmVenda.QryCliente.FieldByName('IDSituacao').AsInteger;
+  Observacao := dtmVenda.QryCliente.FieldByName('observacao').AsString;
 
   if Situacao = 3 then
   begin
-    Observacao := dtmVenda.QryCliente.FieldByName('observacao').AsString;
-
     if Observacao <> '' then
       ShowMessage('Observação para o cliente:' + sLineBreak + Observacao)
     else
@@ -154,7 +153,7 @@ begin
 
    if(dtmVenda.QryCliente.FieldByName('IDSituacao').AsInteger = 4) then
   begin
-    ShowMessage('Cliente Inativo!');
+    ShowMessage('Cliente Inativo!' +sLineBreak+ 'Verifique se os dados cadastrais estão atualizados' );
     lkpCliente.KeyValue:='';
   end;
 
@@ -345,6 +344,7 @@ begin
     end
     else
       lkpCliente.KeyValue:='';
+      Abort;
   end;
 
   if MessageDlg('Tem certeza que deseja realizar esta venda?', mtConfirmation, [mbYes, mbNo], 0) = mrYes then
@@ -470,7 +470,7 @@ inherited;
      Abort;
   end;
 
-  if edtQuantidade.Value <= 0 then begin
+  if (edtQuantidade.Text = '') or (edtQuantidade.Value <= 0) then begin
      MessageDlg('Quantidade não pode ser zero',mtInformation, [mbOK],0);
      edtQuantidade.SetFocus;
      Abort;
@@ -603,7 +603,6 @@ begin
     ADataset.First;
     while not ADataset.Eof do
     begin
-
       if (UltimaVenda <> '') and
          (UltimaVenda <> ADataset.FieldByName('codVenda').AsString) then
       begin
@@ -620,7 +619,7 @@ begin
 
       ADataset.Next;
     end;
-    Lista.SaveToFile('C:\Users\devmv\Desktop\Planilha.csv');
+    Lista.SaveToFile(ExtractFilePath(ParamStr(0)) + 'Planilha.csv');
   finally
     Lista.Free;
   end;
@@ -643,6 +642,11 @@ procedure TfrmProVenda.edtQuantidadeExit(Sender: TObject);
 begin
   inherited;
   edtTotalProduto.Value:=TotalizarProduto(edtValorUnitario.Value, edtQuantidade.Value);
+  if (edtQuantidade.Text = '') or (edtQuantidade.Value <= 0) then begin
+     MessageDlg('Quantidade não pode ser zero',mtInformation, [mbOK],0);
+     edtQuantidade.SetFocus;
+     Abort;
+  end;
 end;
 
 procedure TfrmProVenda.FormClose(Sender: TObject; var Action: TCloseAction);

@@ -154,8 +154,7 @@ begin
 end;
 
 procedure TfrmControleLog.mskPesquisarChange(Sender: TObject);
-var Date:TDateTime;
-s: string;
+var Date:TDateTime; s: string;
 begin
   if(trim(TMaskEdit(Sender).Text) = '')then
     Exit;

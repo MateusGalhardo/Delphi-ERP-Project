@@ -87,6 +87,7 @@ type
     procedure grdListagemDblClick(Sender: TObject);
     procedure edtTelefoneKeyPress(Sender: TObject; var Key: Char);
     procedure edtDocKeyPress(Sender: TObject; var Key: Char);
+    procedure chkSemNumeroClick(Sender: TObject);
   private
     { Private declarations }
     oCliente:TCliente;
@@ -311,6 +312,23 @@ begin
      edtBairro.Text         :=oCliente.bairro;
      edtCidade.Text         :=oCliente.cidade;
      edtCasa.Text           :=oCliente.Casa;
+
+     chkSemNumero.OnClick := nil;
+     try
+     if UpperCase(Trim(edtCasa.Text)) = 'S/N' then
+     begin
+       chkSemNumero.Checked := True;
+       edtCasa.ReadOnly := True;
+     end
+     else
+     begin
+       chkSemNumero.Checked := False;
+       edtCasa.ReadOnly := False;
+     end;
+     finally
+       chkSemNumero.OnClick := chkSemNumeroClick;
+     end;
+
      edtObservacao.Text     :=oCliente.observacao;
      edtTelefone.Text       :=oCliente.telefone;
      edtEmail.Text          :=oCliente.email;
@@ -419,8 +437,7 @@ begin
     Exit;
   end;
 
-  if (not chkSemNumero.Checked) and
-   (Trim(edtCasa.Text) = '') then
+  if (not chkSemNumero.Checked) and (Trim(edtCasa.Text) = '') then
   begin
     ShowMessage('Informe o número da casa');
     edtCasa.SetFocus;
@@ -428,7 +445,7 @@ begin
   end;
 
   if Trim(cbbPessoa.Text) = 'Física' then
- begin
+  begin
   if not ValidarCPF(edtDoc.Text) then
   begin
     ShowMessage('CPF Inválido');
@@ -491,12 +508,16 @@ begin
   edtNome.Clear;
   edtDoc.Clear;
 
+  chkSemNumero.Checked := False;
+  edtCasa.Enabled := True;
+
   dtpDataNascimento.date:=Date;
   lkpStatus.KeyValue := Null;
 
   LimparComponenteItem;
 
   oCliente.Limpar;
+
   cbbPessoa.SetFocus;
   cbbPessoa.ItemIndex := -1;
   cbbPessoa.Text := '';
@@ -581,6 +602,21 @@ begin
   else lblDoc.Caption := 'CNPJ';
 
   edtDoc.Clear
+end;
+
+procedure TfrmCadCliente.chkSemNumeroClick(Sender: TObject);
+begin
+  if chkSemNumero.Checked then
+  begin
+    edtCasa.Text := 'S/N';
+    edtCasa.ReadOnly := True;
+  end
+  else
+  begin
+    edtCasa.Clear;
+    edtCasa.ReadOnly := False;
+  end;
+  inherited;
 end;
 
 procedure TfrmCadCliente.edtCEPChange(Sender: TObject);

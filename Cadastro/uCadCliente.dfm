@@ -2,7 +2,6 @@ inherited frmCadCliente: TfrmCadCliente
   Caption = 'Cadastro de Cliente'
   ClientHeight = 604
   ClientWidth = 1336
-  ExplicitTop = -147
   ExplicitWidth = 1342
   ExplicitHeight = 633
   PixelsPerInch = 96
@@ -755,7 +754,6 @@ inherited frmCadCliente: TfrmCadCliente
     end
   end
   inherited fdqryListagem: TFDQuery
-    Active = True
     SQL.Strings = (
       'select clienteId,'
       '           nome,'

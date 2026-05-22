@@ -8,10 +8,16 @@ inherited frmProVenda: TfrmProVenda
     Width = 913
     ExplicitWidth = 913
     inherited tabListagem: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 905
+      ExplicitHeight = 457
       inherited pnlListagemTopo: TPanel
         Width = 905
         ExplicitWidth = 905
+        inherited mskPesquisar: TMaskEdit
+          OnExit = mskPesquisarExit
+        end
         object btnExcel: TBitBtn
           Left = 368
           Top = 18
@@ -88,7 +94,10 @@ inherited frmProVenda: TfrmProVenda
       end
     end
     inherited tabManutencao: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
       ExplicitWidth = 905
+      ExplicitHeight = 457
       object lbl1: TLabel
         Left = 152
         Top = 21

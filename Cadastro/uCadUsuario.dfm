@@ -1,6 +1,5 @@
 inherited frmCadUsuario: TfrmCadUsuario
   Caption = 'Cadastro de Usu'#225'rio'
-  ExplicitTop = -79
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl

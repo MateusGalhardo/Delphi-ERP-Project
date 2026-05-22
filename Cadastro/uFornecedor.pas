@@ -333,21 +333,29 @@ end;
 function TfrmFornecedor.BuscarCEP(const CEP: string): TJSONObject;
 var IdHTTP: TIdHTTP; SSL: TIdSSLIOHandlerSocketOpenSSL; Response: string; CEPLimpo: string;
 begin
-  Result := nil;
+  Result   := nil;
   CEPLimpo := SomenteNumeros(CEP);
+
   if Length(CEPLimpo) <> 8 then
     Exit;
 
   IdHTTP := TIdHTTP.Create(nil);
-  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+  SSL    := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
   try
     SSL.SSLOptions.Method := sslvTLSv1_2;
-    SSL.SSLOptions.Mode := sslmClient;
+    SSL.SSLOptions.Mode   := sslmClient;
+    IdHTTP.IOHandler      := SSL;
 
-    IdHTTP.IOHandler := SSL;
+    IdHTTP.ConnectTimeout  := 5000;
+    IdHTTP.ReadTimeout     := 5000;
 
-    Response := IdHTTP.Get('https://viacep.com.br/ws/' + CEPLimpo + '/json/');
-    Result := TJSONObject.ParseJSONValue(Response) as TJSONObject;
+    try
+      Response := IdHTTP.Get('https://viacep.com.br/ws/' + CEPLimpo + '/json/');
+      Result   := TJSONObject.ParseJSONValue(Response) as TJSONObject;
+    except
+      Result := nil;
+    end;
+
   finally
     SSL.Free;
     IdHTTP.Free;
@@ -364,40 +372,41 @@ begin
     if JSON.GetValue('erro') <> nil then
     begin
       edtEndereco.Clear;
-      edtBairro.Clear;                              //se o CEP não for encontrado
+      edtBairro.Clear;
       edtCidade.Clear;
       edtEstado.Clear;
 
       edtEndereco.ReadOnly := False;
-      edtEstado.ReadOnly := False;
-      edtBairro.ReadOnly := False;
-      edtCidade.ReadOnly := False;
+      edtEstado.ReadOnly   := False;
+      edtBairro.ReadOnly   := False;
+      edtCidade.ReadOnly   := False;
 
-      ShowMessage('CEP inválido!');
+      ShowMessage('CEP não encontrado.' + sLineBreak + 'Verifique o número digitado ou preencha o endereço manualmente.');
       Exit;
     end;
 
     edtEndereco.Text := JSON.GetValue('logradouro').Value;
-    edtBairro.Text   := JSON.GetValue('bairro').Value;       //se o CEP for encontrado
+    edtBairro.Text   := JSON.GetValue('bairro').Value;
     edtCidade.Text   := JSON.GetValue('localidade').Value;
     edtEstado.Text   := JSON.GetValue('uf').Value;
 
     edtEndereco.ReadOnly := True;
-    edtEstado.ReadOnly := True;
-    edtBairro.ReadOnly := True;
-    edtCidade.ReadOnly := True;
-
+    edtEstado.ReadOnly   := True;
+    edtBairro.ReadOnly   := True;
+    edtCidade.ReadOnly   := True;
   finally
     JSON.Free;
   end
   else
   begin
-    ShowMessage('Não foi possível consultar o CEP.');
+    ShowMessage('Serviço de CEP indisponível no momento.' + sLineBreak + 'Por favor, preencha o endereço manualmente.');
 
     edtEndereco.ReadOnly := False;
-    edtEstado.ReadOnly := False;
-    edtBairro.ReadOnly := False;
-    edtCidade.ReadOnly := False;
+    edtEstado.ReadOnly   := False;
+    edtBairro.ReadOnly   := False;
+    edtCidade.ReadOnly   := False;
+
+    edtEndereco.SetFocus;
   end;
 end;
 

@@ -67,6 +67,7 @@ type
     lbl12: TLabel;
     lbl13: TLabel;
     lbl14: TLabel;
+    chkSemNumero: TCheckBox;
     procedure btnAlterarClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
@@ -86,6 +87,7 @@ type
     procedure grdListagemDblClick(Sender: TObject);
     procedure edtTelefoneKeyPress(Sender: TObject; var Key: Char);
     procedure edtDocKeyPress(Sender: TObject; var Key: Char);
+    procedure chkSemNumeroClick(Sender: TObject);
   private
     { Private declarations }
     oCliente:TCliente;
@@ -310,6 +312,23 @@ begin
      edtBairro.Text         :=oCliente.bairro;
      edtCidade.Text         :=oCliente.cidade;
      edtCasa.Text           :=oCliente.Casa;
+
+     chkSemNumero.OnClick := nil;
+     try
+     if UpperCase(Trim(edtCasa.Text)) = 'S/N' then
+     begin
+       chkSemNumero.Checked := True;
+       edtCasa.ReadOnly := True;
+     end
+     else
+     begin
+       chkSemNumero.Checked := False;
+       edtCasa.ReadOnly := False;
+     end;
+     finally
+       chkSemNumero.OnClick := chkSemNumeroClick;
+     end;
+
      edtObservacao.Text     :=oCliente.observacao;
      edtTelefone.Text       :=oCliente.telefone;
      edtEmail.Text          :=oCliente.email;
@@ -372,18 +391,18 @@ begin
     Qry.Connection := dtmConexao.ConexaoDB;
 
     Qry.SQL.Text :=
-      'SELECT clienteId ' +
+      'SELECT clienteId ' +             //ve se tem documento igual
       'FROM clientes ' +
       'WHERE documento = :documento';
 
     Qry.ParamByName('documento').AsString := edtDoc.Text;
     Qry.Open;
 
-    if not Qry.IsEmpty then
+    if not Qry.IsEmpty then     //se a query n tiver vazia é pq tem documento igual
     begin
       if (Trim(edtClienteId.Text) = '') or
-         (Qry.FieldByName('clienteId').AsInteger <> StrToIntDef(edtClienteId.Text,0)) then
-      begin
+         (Qry.FieldByName('clienteId').AsInteger <> StrToIntDef(edtClienteId.Text,0)) then //verificação se ta alterando
+      begin                                                                        //o mesmo cliente ou se ta duplicando
         ShowMessage('Documento já cadastrado no sistema');
         edtDoc.SetFocus;
         Exit;
@@ -418,8 +437,15 @@ begin
     Exit;
   end;
 
+  if (not chkSemNumero.Checked) and (Trim(edtCasa.Text) = '') then
+  begin
+    ShowMessage('Informe o número da casa');
+    edtCasa.SetFocus;
+    Exit;
+  end;
+
   if Trim(cbbPessoa.Text) = 'Física' then
- begin
+  begin
   if not ValidarCPF(edtDoc.Text) then
   begin
     ShowMessage('CPF Inválido');
@@ -482,12 +508,16 @@ begin
   edtNome.Clear;
   edtDoc.Clear;
 
+  chkSemNumero.Checked := False;
+  edtCasa.Enabled := True;
+
   dtpDataNascimento.date:=Date;
   lkpStatus.KeyValue := Null;
 
   LimparComponenteItem;
 
   oCliente.Limpar;
+
   cbbPessoa.SetFocus;
   cbbPessoa.ItemIndex := -1;
   cbbPessoa.Text := '';
@@ -496,21 +526,29 @@ end;
 function BuscarCEP(const CEP: string): TJSONObject;
 var IdHTTP: TIdHTTP; SSL: TIdSSLIOHandlerSocketOpenSSL; Response: string; CEPLimpo: string;
 begin
-  Result := nil;
+  Result   := nil;
   CEPLimpo := SomenteNumeros(CEP);
+
   if Length(CEPLimpo) <> 8 then
     Exit;
 
   IdHTTP := TIdHTTP.Create(nil);
-  SSL := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
+  SSL    := TIdSSLIOHandlerSocketOpenSSL.Create(nil);
   try
     SSL.SSLOptions.Method := sslvTLSv1_2;
-    SSL.SSLOptions.Mode := sslmClient;
+    SSL.SSLOptions.Mode   := sslmClient;
+    IdHTTP.IOHandler      := SSL;
 
-    IdHTTP.IOHandler := SSL;
+    IdHTTP.ConnectTimeout  := 5000;
+    IdHTTP.ReadTimeout     := 5000;
 
-    Response := IdHTTP.Get('https://viacep.com.br/ws/' + CEPLimpo + '/json/');
-    Result := TJSONObject.ParseJSONValue(Response) as TJSONObject;
+    try
+      Response := IdHTTP.Get('https://viacep.com.br/ws/' + CEPLimpo + '/json/');
+      Result   := TJSONObject.ParseJSONValue(Response) as TJSONObject;
+    except
+      Result := nil;
+    end;
+
   finally
     SSL.Free;
     IdHTTP.Free;
@@ -518,7 +556,8 @@ begin
 end;
 
 procedure TfrmCadCliente.PreencherEndereco(const CEP: string);
-var JSON: TJSONObject;
+var
+  JSON: TJSONObject;
 begin
   JSON := BuscarCEP(CEP);
 
@@ -527,40 +566,42 @@ begin
     if JSON.GetValue('erro') <> nil then
     begin
       edtEndereco.Clear;
-      edtBairro.Clear;                              //se o CEP não for encontrado
+      edtBairro.Clear;
       edtCidade.Clear;
       edtEstado.Clear;
 
       edtEndereco.ReadOnly := False;
-      edtEstado.ReadOnly := False;
-      edtBairro.ReadOnly := False;
-      edtCidade.ReadOnly := False;
+      edtEstado.ReadOnly   := False;
+      edtBairro.ReadOnly   := False;
+      edtCidade.ReadOnly   := False;
 
-      ShowMessage('CEP inválido!');
+      ShowMessage('CEP não encontrado.' + sLineBreak +
+                  'Verifique o número digitado ou preencha o endereço manualmente.');
       Exit;
     end;
 
     edtEndereco.Text := JSON.GetValue('logradouro').Value;
-    edtBairro.Text   := JSON.GetValue('bairro').Value;       //se o CEP for encontrado
+    edtBairro.Text   := JSON.GetValue('bairro').Value;
     edtCidade.Text   := JSON.GetValue('localidade').Value;
     edtEstado.Text   := JSON.GetValue('uf').Value;
 
     edtEndereco.ReadOnly := True;
-    edtEstado.ReadOnly := True;
-    edtBairro.ReadOnly := True;
-    edtCidade.ReadOnly := True;
-
+    edtEstado.ReadOnly   := True;
+    edtBairro.ReadOnly   := True;
+    edtCidade.ReadOnly   := True;
   finally
     JSON.Free;
   end
   else
   begin
-    ShowMessage('Não foi possível consultar o CEP.');
+    ShowMessage('Serviço de CEP indisponível no momento.' + sLineBreak + 'Por favor, preencha o endereço manualmente.');
 
     edtEndereco.ReadOnly := False;
-    edtEstado.ReadOnly := False;
-    edtBairro.ReadOnly := False;
-    edtCidade.ReadOnly := False;
+    edtEstado.ReadOnly   := False;
+    edtBairro.ReadOnly   := False;
+    edtCidade.ReadOnly   := False;
+
+    edtEndereco.SetFocus;
   end;
 end;
 
@@ -572,6 +613,21 @@ begin
   else lblDoc.Caption := 'CNPJ';
 
   edtDoc.Clear
+end;
+
+procedure TfrmCadCliente.chkSemNumeroClick(Sender: TObject);
+begin
+  if chkSemNumero.Checked then
+  begin
+    edtCasa.Text := 'S/N';
+    edtCasa.ReadOnly := True;
+  end
+  else
+  begin
+    edtCasa.Clear;
+    edtCasa.ReadOnly := False;
+  end;
+  inherited;
 end;
 
 procedure TfrmCadCliente.edtCEPChange(Sender: TObject);

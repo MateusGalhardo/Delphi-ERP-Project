@@ -176,8 +176,8 @@ begin
   inherited;
   if TDBLookupComboBox(Sender).KeyValue<>Null then begin
      edtValorUnitario.Value:=dtmVenda.QryProdutos.FieldByName('valor').AsFloat;
-     edtValorUnitario.value:= Ceil(edtValorUnitario.Value / 0.45);
-     edtQuantidade.Value:=1;
+     edtValorUnitario.value:= Ceil(edtValorUnitario.Value / 0.45); //apenas para simular a soma de taxas de uma empresa
+     edtQuantidade.Value:=1;          //com um pouco mais de tempo eu faria uma tela para o admin definir a margem
      edtTotalProduto.Value:=TotalizarProduto(edtValorUnitario.Value, edtQuantidade.Value);
   end;
 end;
@@ -603,7 +603,6 @@ begin
     ADataset.First;
     while not ADataset.Eof do
     begin
-
       if (UltimaVenda <> '') and
          (UltimaVenda <> ADataset.FieldByName('codVenda').AsString) then
       begin
@@ -620,7 +619,7 @@ begin
 
       ADataset.Next;
     end;
-    Lista.SaveToFile('C:\Users\devmv\Desktop\Planilha.csv');
+    Lista.SaveToFile(ExtractFilePath(ParamStr(0)) + 'Planilha.csv');
   finally
     Lista.Free;
   end;

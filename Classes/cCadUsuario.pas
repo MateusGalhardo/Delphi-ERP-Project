@@ -71,10 +71,6 @@ begin
     Qry.SQL.Add('delete from usuariosAcaoAcesso where usuarioId = :usuarioId '+
                 'delete from usuarios where usuarioId = :usuarioId ');
                 Qry.ParamByName('usuarioId').AsInteger :=F_usuarioId;
-
-    Qry.SQL.Add('DELETE FROM usuarios '+
-                ' WHERE usuarioId=:usuarioId ');
-    Qry.ParamByName('usuarioId').AsInteger :=F_usuarioId;
     Try
       ConexaoDB.StartTransaction;
       Qry.ExecSQL;

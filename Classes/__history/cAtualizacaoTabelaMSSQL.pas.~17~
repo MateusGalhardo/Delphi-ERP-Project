@@ -199,6 +199,7 @@ begin
 
       ' CONSTRAINT FK_ProdutosFornecedor ' +
       ' FOREIGN KEY (fornId) REFERENCES fornecedor(fornId) ' +
+
       ')'
     );
   end;

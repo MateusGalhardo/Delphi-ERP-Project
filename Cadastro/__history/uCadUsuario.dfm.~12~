@@ -1,5 +1,6 @@
 inherited frmCadUsuario: TfrmCadUsuario
   Caption = 'Cadastro de Usu'#225'rio'
+  ExplicitTop = -79
   PixelsPerInch = 96
   TextHeight = 13
   inherited pgcPrincipal: TPageControl
@@ -19,6 +20,10 @@ inherited frmCadUsuario: TfrmCadUsuario
       end
     end
     inherited tabManutencao: TTabSheet
+      ExplicitLeft = 4
+      ExplicitTop = 24
+      ExplicitWidth = 882
+      ExplicitHeight = 457
       object btnExibir: TSpeedButton
         Left = 231
         Top = 176
@@ -120,7 +125,6 @@ inherited frmCadUsuario: TfrmCadUsuario
     end
   end
   inherited fdqryListagem: TFDQuery
-    Active = True
     SQL.Strings = (
       'select usuarioID,'
       'nome,'
@@ -156,7 +160,6 @@ inherited frmCadUsuario: TfrmCadUsuario
     Top = 24
   end
   object QryFuncao: TFDQuery
-    Active = True
     Connection = dtmConexao.ConexaoDB
     SQL.Strings = (
       'SELECT perfilId, descricao FROM perfil')
